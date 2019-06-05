@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<style type="text/css">
+		.flower{
+			width: 100px; 
+			position: absolute; 
+			display: none;
+		}
+		.shooter{
+			width: 100px; 
+			position: absolute; 
+			display: none;
+		}
+
+	
+	</style>
+</head>
+<body>
+	<div style="background-image: url(game.png); height: 1000px; background-size: 100% 100%" id="bg">
+		<h3 style="color: yellow; position: absolute;  margin-left: 13%; margin-top: 9%">SUN <span class="sun">100</span></h3>
+		<button class="btn btn-warning flower_btn_upg"  style="position: absolute;  margin-left: 20%; margin-top: 3%">Улучшить цветы 750</button>
+		<button class="btn btn-success shooter_btn_upg" style="position: absolute;  margin-left: 33%; margin-top: 3%" >Улучшить горох <span class="cost">750</span> </button>
+		<!--цветы 1 ряд-->
+		<img class="flower" src="sunflower.png"  style=" margin-left: 33%; margin-top: 13%; ">
+		<img class="flower" src="sunflower.png"  style=" margin-left: 33%; margin-top: 19%; ">
+		<img class="flower" src="sunflower.png"  style=" margin-left: 33%; margin-top: 25%; ">
+		<img class="flower" src="sunflower.png"  style=" margin-left: 33%; margin-top: 31%; ">
+		<img class="flower" src="sunflower.png"  style=" margin-left: 33%; margin-top: 37%; ">
+		<button class="flower_btn btn btn-warning" style="color: green; font-weight: bold; position: absolute; margin-left: 33%; margin-top: 17%; ">PLANT 50</button>	
+		<button class="flower_btn btn btn-warning" style="color: green; font-weight: bold; position: absolute; margin-left: 33%; margin-top: 23%; ">PLANT 50</button>
+		<button class="flower_btn btn btn-warning" style="color: green; font-weight: bold; position: absolute; margin-left: 33%; margin-top: 29%; ">PLANT 50</button>
+		<button class="flower_btn btn btn-warning" style="color: green; font-weight: bold; position: absolute;  margin-left: 33%; margin-top: 35%; ">PLANT 50</button>
+		<button class="flower_btn btn btn-warning" style="color: green; font-weight: bold; position: absolute; margin-left: 33%; margin-top: 41%; ">PLANT 50</button>
+
+		<!--горох 2 ряд-->
+		<img class="shooter" src="peashooter.png"  style=" margin-left: 40%; margin-top: 13%;">		
+		<img class="shooter" src="peashooter.png"  style=" margin-left: 40%; margin-top: 19%; ">	
+		<img class="shooter" src="peashooter.png"  style=" margin-left: 40%; margin-top: 25%; ">	
+		<img class="shooter" src="peashooter.png"  style=" margin-left: 40%; margin-top: 31%;">
+		<img class="shooter" src="peashooter.png"  style=" margin-left: 40%; margin-top: 37%; ">	
+		<button class="shooter_btn btn btn-success" style="color: yellow; font-weight: bold; position: absolute; margin-left: 40%; margin-top: 17%; ">PLANT 100</button>
+		<button class="shooter_btn btn btn-success" style="color: yellow; font-weight: bold; position: absolute; margin-left: 40%; margin-top: 23%; ">PLANT 100</button>	
+		<button class="shooter_btn btn btn-success" style="color: yellow; font-weight: bold; position: absolute; margin-left: 40%; margin-top: 29%; ">PLANT 100</button>
+		<button class="shooter_btn btn btn-success" style="color: yellow; font-weight: bold; position: absolute; margin-left: 40%; margin-top: 35%; ">PLANT 100</button>
+		<button class="shooter_btn btn btn-success" style="color: yellow; font-weight: bold; position: absolute; margin-left: 40%; margin-top: 41%; ">PLANT 100</button>	
+
+		<!--орех 3 ряд-->	
+		
+		
+									
+	</div>
+
+<script>
+	let flowers = document.querySelectorAll(".flower");
+	let flower_btn = document.querySelectorAll(".flower_btn");
+	let sunflowers = 0;
+	let shooter_btn = document.querySelectorAll(".shooter_btn");
+	let shooter = document.querySelectorAll(".shooter");
+	let zombies = [0,0,0,0,0]
+	let zombies_pos = [-1,-1,-1,-1,-1]
+	let speed = [-1,-1,-1,-1,-1]
+	let sun = 100;
+	let lvl = [1,1]
+	let peas = [47,47,47,47,47]
+	let wave = 1
+	let killed = 0
+	let cost = 750
+	for(let index = 0; index<5; index = index + 1){
+		flower_btn[index].onclick = function(){
+			if(sun >= 50){
+				sun -= 50
+				flower_btn[index].style.display = "none"
+				flowers[index].style.display = "block"
+				sunflowers += 1
+				document.querySelector(".sun").innerHTML = sun
+			}
+		}
+	}
+	for(let index = 0; index<5; index = index + 1){
+		shooter_btn[index].onclick = function(){
+			if(sun >= 100){
+				sun -= 100
+				shooter_btn[index].style.display = "none"
+				shooter[index].style.display = "block"
+				document.querySelector(".sun").innerHTML = sun
+			}
+		}
+	}
+	document.querySelector(".flower_btn_upg").onclick = function(){
+		if(sun >= 750){
+			sun -= 750
+			lvl[0] += 1
+			for(let index2 = 0; index2<5; index2 = index2 + 1){
+				flowers[index2].src = "twinsunflower.png"
+			}
+			document.querySelector(".flower_btn_upg").style.display = "none"
+			document.querySelector(".sun").innerHTML = sun
+		}
+	}
+	document.querySelector(".shooter_btn_upg").onclick = function(){
+		if(sun >= cost){
+			sun -= cost
+			cost += 250
+			lvl[1] += 1
+			for(let index2 = 0; index2<5; index2 = index2 + 1){
+				shooter[index2].src = "repeater.png"
+			}
+			document.querySelector(".sun").innerHTML = sun
+			document.querySelector(".cost").innerHTML = cost
+			if(lvl[1] == 8){
+				document.querySelector(".shooter_btn_upg").style.display = "none"
+			}
+		}
+	}
+	let sun_give = function(){
+		for(let index = 0; index < sunflowers + 1; index += 1){
+			if(Math.round(Math.random()*1) != 0){
+				let sun2 = document.createElement("img")
+				bg.appendChild(sun2)
+				sun2.style.position = "absolute"
+				sun2.style.width = "75px"
+				sun2.style.height = "75px"
+				sun2.src = "sun.png"
+				sun2.style.marginTop = Math.round(Math.random()*30) + "%"
+				sun2.style.marginLeft = Math.round(Math.random()*50+25) + "%"
+				sun2.onclick = function(){
+				sun2.style.display="none"
+				sun += 25 * lvl[0]
+				document.querySelector(".sun").innerHTML = sun
+				}
+			}
+		}
+	}
+	let zombie = function(){
+		if(wave == 1){
+			setTimeout(zombie,Math.round(Math.random()*2000)+2000)
+		}
+		if(wave == 2){
+			setTimeout(zombie,Math.round(Math.random()*2000)+2000)
+		}
+		if(wave == 3){
+			setTimeout(zombie,Math.round(Math.random()*1000)+1000)
+		}
+		if(wave == 4){
+			setTimeout(zombie,Math.round(Math.random()*750)+750)
+		}
+		if(wave == 5){
+			setTimeout(zombie,Math.round(Math.random()*500)+500)
+		}
+		if(wave >= 6){
+			setTimeout(zombie,Math.round(Math.random()*250)+250)
+		}
+		let index = Math.round(Math.random()*4)
+		if(zombies[index] <= 0 && zombies_pos[index] == -1){
+			let enemy = document.createElement("img")
+			bg.appendChild(enemy)
+			enemy.style.position = "absolute"
+			enemy.style.width = "90px"
+			enemy.style.height = "150px"
+			if(wave == 1){
+				zombies[index] = 8
+				enemy.src = "zombie.png"
+				speed[index] = 0.125
+			}
+			if(wave == 2){
+				if(Math.round(Math.random()*1) == 0){
+					zombies[index] = 8
+					enemy.src = "zombie.png"
+					speed[index] = 0.125
+				}
+				else{
+					zombies[index] = 16
+					enemy.src = "zombie2.png"
+					speed[index] = 0.125
+				}
+			}
+			if(wave == 3){
+				if(Math.round(Math.random()*1) == 0){
+					zombies[index] = 16
+					enemy.src = "zombie2.png"
+					speed[index] = 0.125
+				}
+				else{
+					zombies[index] = 40
+					enemy.src = "zombie3.png"
+					speed[index] = 0.125
+				}
+			}
+			if(wave == 4){
+				if(Math.round(Math.random()*1) == 0){
+					zombies[index] = 40
+					enemy.src = "zombie3.png"
+					speed[index] = 0.125
+				}
+				else{
+					zombies[index] = 80
+					enemy.src = "zombie4.png"
+					speed[index] = 0.125
+				}
+			}
+			if(wave == 5){
+				if(Math.round(Math.random()*1) == 0){
+					zombies[index] = 80
+					enemy.src = "zombie4.png"
+					speed[index] = 0.125
+				}
+				else{
+					zombies[index] = 60
+					enemy.src = "zombie5.png"
+					speed[index] = 0.2
+				}
+			}
+			if(wave >= 6){
+				if(Math.round(Math.random()*1) == 0){
+					zombies[index] = 80
+					enemy.src = "zombie4.png"
+					speed[index] = 0.125
+				}
+				else{
+					zombies[index] = 60
+					enemy.src = "zombie5.png"
+					speed[index] = 0.2
+				}
+			}
+			enemy.style.marginLeft = "85%"
+			zombies_pos[index] = 85
+			if(index == 0){
+				enemy.style.marginTop = "9%"
+			}
+			if(index == 1){
+				enemy.style.marginTop = "15%"
+			}
+			if(index == 2){
+				enemy.style.marginTop = "21%"
+			}
+			if(index == 3){
+				enemy.style.marginTop = "27%"
+			}
+			if(index == 4){
+				enemy.style.marginTop = "33%"
+			}
+			let walk = function(){
+				zombies_pos[index] -= speed[index]
+				enemy.style.marginLeft = zombies_pos[index] + "%"
+				if(zombies[index] < 1){
+					zombies[index] = 0
+					zombies_pos[index] = -1
+					enemy.style.display = "none"
+					killed += 1
+					if(killed % 10 == 0){
+						wave += 1
+					}
+					clearInterval(interval_walk);
+					if(wave == 1){
+						setTimeout(zombie,Math.round(Math.random()*1000)+1000)
+					}
+					if(wave == 2){
+						setTimeout(zombie,Math.round(Math.random()*750)+750)
+					}
+					if(wave == 3){
+						setTimeout(zombie,Math.round(Math.random()*500)+500)
+					}
+					if(wave == 4){
+						setTimeout(zombie,Math.round(Math.random()*500)+500)
+					}
+					if(wave == 5){
+						setTimeout(zombie,Math.round(Math.random()*300)+300)
+					}
+					if(wave >= 6){
+						setTimeout(zombie,Math.round(Math.random()*100)+100)
+					}
+					
+				}
+			}
+			let interval_walk=setInterval(walk,150);
+
+		}
+			
+		
+	}
+	let pea = function(){
+		for(let index = 0; index<5; index = index + 1){
+			if (shooter[index].style.display == "block" && zombies[index] > 0){
+				let elem = document.createElement("img")
+				bg.appendChild(elem)
+				elem.style.position = "absolute"
+				elem.style.width = "30px"
+				elem.style.height = "30px"
+				elem.src = "pea.png"
+				elem.style.marginLeft = "47%"
+				if(index == 0){
+					elem.style.marginTop = "15%"
+				}
+				if(index == 1){
+					elem.style.marginTop = "21%"
+				}
+				if(index == 2){
+					elem.style.marginTop = "27%"
+				}
+				if(index == 3){
+					elem.style.marginTop = "33%"
+				}
+				if(index == 4){
+					elem.style.marginTop = "39%"
+				}
+				
+				let func = function(){
+					peas[index] += 1
+					elem.style.marginLeft = peas[index] + "%"
+					if(peas[index] >= zombies_pos[index]){
+						zombies[index] -= lvl[1]
+						peas[index] = 47
+						elem.style.display = "none"
+						if(speed[index] == 0.2 && zombies[index] <= 8){
+							speed[index] = 1
+						}
+						clearInterval(interval_pea);
+					}
+					if(peas[index] >= 99){
+						peas[index] = 47
+						clearInterval(interval_pea);
+						elem.style.display = "none"
+
+					}
+				}
+				let interval_pea=setInterval(func,20);
+				
+				
+			}
+		}
+	}
+	
+	setInterval(sun_give,4000)
+	setInterval(pea,2000)
+	setTimeout(zombie,10000)
+	
+	
+</script>
+</body>
+</html>
